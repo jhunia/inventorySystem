@@ -1,22 +1,18 @@
-import User from '../models/User.models.js';
+import Product from '../models/User.models.js';
+
 
 export const productManagement = async (req, res) => {
-    const {name, id, category, price, stock, discount} = req.body;
+   const {name , id , category, price, stock, discount} = req.body;
     try {
-        if (!name || !id || !category || !price || !stock || !discount) {
-            return res.status(400).json({
-                success: false,
-                message: 'All fields are required'
-            });
-        }
-        const existingProduct = await User.findOne({ id });
+   
+        const existingProduct = await Product.findOne({ id });
         if (existingProduct) {
             return res.status(400).json({
                 success: false,
                 message: 'Product already exists'
             });
         }
-        const newProduct = new User({
+        const newProduct = new Product({
             name,
             id,
             category,
@@ -41,7 +37,7 @@ export const productManagement = async (req, res) => {
 }
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await User.find();
+        const products = await Product.find();
         if (!products || products.length === 0) {
             return res.status(404).json({
                 success: false,
@@ -82,6 +78,20 @@ export const dummyData = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error fetching dummy data',
+        });
+    }
+}
+ export const displayMessage = (req, res) => {
+    try {
+        return res.status(200).json({
+            success: true,
+            message: 'Hello from the displayMessage endpoint!'
+        });
+    } catch (error) {
+        console.error('Error displaying message:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error displaying message',
         });
     }
 }
